@@ -85,4 +85,11 @@
     <string name="sample_add_button_text">Add</string>
     <string name="add_to_cart_content_description">Add to Shopping Cart</string>
 
+    <!-- Checkout and notifications -->
+    <string name="cart_empty">Your cart is empty</string>
+    <string name="checkout_queued">Processing your order in the background. We will notify you when it is ready.</string>
+    <string name="notif_channel_name">Orders</string>
+    <string name="notif_order_title">Order confirmed</string>
+    <string name="notif_order_text">Your order of %1$d items (%2$s) was processed</string>
+
 </resources>

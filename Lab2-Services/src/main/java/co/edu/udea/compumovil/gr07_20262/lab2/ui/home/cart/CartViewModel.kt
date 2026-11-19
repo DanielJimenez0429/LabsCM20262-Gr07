@@ -24,6 +24,11 @@ import co.edu.udea.compumovil.gr07_20262.lab2.model.SnackRepo
 import co.edu.udea.compumovil.gr07_20262.lab2.model.SnackbarManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import android.content.Context
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.workDataOf
+import co.edu.udea.compumovil.gr07_20262.lab2.work.CheckoutWorker
 
 /**
  * Holds the contents of the cart and allows changes to it.
@@ -64,6 +69,25 @@ class CartViewModel(private val snackbarManager: SnackbarManager, snackRepositor
         }
     }
 
+    fun checkout(context: Context) {
+        val lines = _orderLines.value
+        if (lines.isEmpty()) {
+            snackbarManager.showMessage(R.string.cart_empty)
+            return
+        }
+        val request = OneTimeWorkRequestBuilder<CheckoutWorker>()
+            .setInputData(
+                workDataOf(
+                    CheckoutWorker.KEY_ITEMS to lines.sumOf { it.count },
+                    CheckoutWorker.KEY_TOTAL to lines.sumOf { it.snack.price * it.count },
+                ),
+            )
+            .build()
+        WorkManager.getInstance(context.applicationContext).enqueue(request)
+        _orderLines.value = emptyList()
+        snackbarManager.showMessage(R.string.checkout_queued)
+    }
+    
     fun removeSnack(snackId: Long) {
         _orderLines.value = _orderLines.value.filter { it.snack.id != snackId }
     }

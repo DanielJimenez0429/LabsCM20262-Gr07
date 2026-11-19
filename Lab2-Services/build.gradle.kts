@@ -144,4 +144,5 @@ dependencies {
 
     implementation(libs.androidx.glance.appwidget)
     implementation(libs.androidx.glance.preview)
+    implementation("androidx.work:work-runtime-ktx:2.10.1")
 }

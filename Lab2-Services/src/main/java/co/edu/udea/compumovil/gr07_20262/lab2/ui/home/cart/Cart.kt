@@ -94,6 +94,7 @@ fun Cart(
 ) {
     val orderLines by viewModel.orderLines.collectAsStateWithLifecycle()
     val inspiredByCart = remember { SnackRepo.getInspiredByCart() }
+    val context = LocalContext.current
     Cart(
         orderLines = orderLines,
         removeSnack = viewModel::removeSnack,
@@ -101,6 +102,7 @@ fun Cart(
         decreaseItemCount = viewModel::decreaseSnackCount,
         inspiredByCart = inspiredByCart,
         onSnackClick = onSnackClick,
+        onCheckout = { viewModel.checkout(context) },
         modifier = modifier,
     )
 }
@@ -113,6 +115,7 @@ fun Cart(
     decreaseItemCount: (Long) -> Unit,
     inspiredByCart: SnackCollection,
     onSnackClick: (Long, String) -> Unit,
+    onCheckout: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     JetsnackSurface(modifier = modifier.fillMaxSize()) {
@@ -127,7 +130,7 @@ fun Cart(
                 modifier = Modifier.align(Alignment.TopCenter),
             )
             DestinationBar(modifier = Modifier.align(Alignment.TopCenter))
-            CheckoutBar(modifier = Modifier.align(Alignment.BottomCenter))
+            CheckoutBar(onCheckout = onCheckout, modifier = Modifier.align(Alignment.BottomCenter))
         }
     }
 }
@@ -438,7 +441,7 @@ fun SummaryItem(subtotal: Long, shippingCosts: Long, modifier: Modifier = Modifi
 }
 
 @Composable
-private fun CheckoutBar(modifier: Modifier = Modifier) {
+private fun CheckoutBar(onCheckout: () -> Unit, modifier: Modifier = Modifier) {
     Column(
         modifier.background(
             JetsnackTheme.colors.uiBackground.copy(alpha = AlphaNearOpaque),
@@ -449,7 +452,7 @@ private fun CheckoutBar(modifier: Modifier = Modifier) {
         Row {
             Spacer(Modifier.weight(1f))
             JetsnackButton(
-                onClick = { /* todo */ },
+                onClick = onCheckout,
                 shape = RectangleShape,
                 modifier = Modifier
                     .padding(horizontal = 12.dp, vertical = 8.dp)
