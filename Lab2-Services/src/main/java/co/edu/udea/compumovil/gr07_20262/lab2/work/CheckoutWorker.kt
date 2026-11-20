@@ -13,25 +13,55 @@ import androidx.core.content.ContextCompat
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import co.edu.udea.compumovil.gr07_20262.lab2.R
+import co.edu.udea.compumovil.gr07_20262.lab2.data.OrderRepository
+import co.edu.udea.compumovil.gr07_20262.lab2.data.OrderStatus
+import co.edu.udea.compumovil.gr07_20262.lab2.data.remote.ApiClient
+import co.edu.udea.compumovil.gr07_20262.lab2.data.remote.OrderRequest
 import co.edu.udea.compumovil.gr07_20262.lab2.ui.utils.formatPrice
-import kotlinx.coroutines.delay
+import java.io.IOException
+import kotlin.coroutines.cancellation.CancellationException
+import retrofit2.HttpException
 
-/** Procesa el pedido del carrito en segundo plano y avisa con una notificación. */
+/**
+ * Envía el pedido al servicio REST (POST /orders) en segundo plano.
+ * Sin red, WorkManager lo deja en espera y lo reintenta con backoff exponencial.
+ */
 class CheckoutWorker(
     appContext: Context,
     params: WorkerParameters,
 ) : CoroutineWorker(appContext, params) {
 
     override suspend fun doWork(): Result {
-        val items = inputData.getInt(KEY_ITEMS, 0)
-        val total = inputData.getLong(KEY_TOTAL, 0L)
+        val repo = OrderRepository.get(applicationContext)
+        val orderId = inputData.getLong(KEY_ORDER_ID, -1L)
+        val order = repo.get(orderId) ?: return Result.failure()
 
-        // Simula el procesamiento del pago/envío del pedido.
-        // (En el paso del servicio REST, aquí va la llamada con Retrofit.)
-        delay(5_000)
+        return try {
+            val response = ApiClient.api.createOrder(
+                OrderRequest(
+                    items = order.items,
+                    itemCount = order.itemCount,
+                    total = order.total,
+                    status = "confirmed",
+                ),
+            )
+            repo.update(orderId, OrderStatus.CONFIRMED, response.id)
+            showNotification(order.itemCount, order.total)
+            Result.success()
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: IOException) {
+            if (runAttemptCount < MAX_ATTEMPTS) Result.retry() else fail(repo, orderId)
+        } catch (e: HttpException) {
+            if (e.code() >= 500 && runAttemptCount < MAX_ATTEMPTS) Result.retry() else fail(repo, orderId)
+        } catch (e: Exception) {
+            fail(repo, orderId)
+        }
+    }
 
-        showNotification(items, total)
-        return Result.success()
+    private fun fail(repo: OrderRepository, orderId: Long): Result {
+        repo.update(orderId, OrderStatus.FAILED)
+        return Result.failure()
     }
 
     @SuppressLint("MissingPermission")
@@ -63,8 +93,8 @@ class CheckoutWorker(
     }
 
     companion object {
-        const val KEY_ITEMS = "items"
-        const val KEY_TOTAL = "total"
+        const val KEY_ORDER_ID = "order_id"
         private const val CHANNEL_ID = "orders"
+        private const val MAX_ATTEMPTS = 5
     }
 }

@@ -1,35 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Jetsnack</string>
-    <string name="label_back">Volver</string>
+    <string name="label_back">Atrás</string>
 
-    <!-- Pestañas principales -->
     <string name="home_feed">Inicio</string>
     <string name="home_search">Buscar</string>
     <string name="home_cart">Mi carrito</string>
     <string name="home_profile">Perfil</string>
 
-    <!-- Inicio -->
     <string name="label_filters">Filtros</string>
-    <string name="label_select_delivery">Seleccionar dirección de entrega</string>
+    <string name="label_select_delivery">Selecciona la dirección de entrega</string>
 
-    <!-- Búsqueda -->
     <string name="search_jetsnack">Buscar en Jetsnack</string>
-    <string name="search_no_matches">No se encontraron resultados para “%1s”</string>
+    <string name="search_no_matches">Sin resultados para “%1s”</string>
     <string name="search_no_matches_retry">Intenta ampliar tu búsqueda</string>
     <string name="search_count">%1d productos</string>
     <string name="label_add">Agregar al carrito</string>
     <string name="label_search">Realizar búsqueda</string>
 
-    <!-- Detalles del producto -->
     <string name="detail_header">Detalles</string>
-    <string name="detail_placeholder">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tempus, sem vitae convallis imperdiet, lectus nunc pharetra diam, ac rhoncus quam eros eu risus. Nulla pulvinar condimentum erat, pulvinar tempus turpis blandit ut. Etiam sed ipsum sed lacus eleifend hendrerit eu quis quam.</string>
+    <string name="detail_placeholder">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tempus, sem vitae convallis imperdiet, lectus nunc pharetra diam, ac rhoncus quam eros eu risus. Nulla pulvinar condimentum erat, pulvinar tempus turpis blandit ut.</string>
     <string name="ingredients">Ingredientes</string>
-    <string name="ingredients_list">Vainilla, harina de almendras, huevos, mantequilla, crema, azúcar</string>
-    <string name="quantity">Cantidad</string>
+    <string name="ingredients_list">Vainilla, harina de almendra, huevos, mantequilla, crema, azúcar</string>
+    <string name="quantity">Cant.</string>
     <string name="add_to_cart">AGREGAR AL CARRITO</string>
 
-    <!-- Carrito -->
     <string name="cart_order_header">Pedido (%1s)</string>
     <plurals name="cart_order_count">
         <item quantity="one">%1d producto</item>
@@ -39,19 +34,18 @@
     <string name="cart_subtotal_label">Subtotal</string>
     <string name="cart_shipping_label">Envío y manejo</string>
     <string name="cart_total_label">Total</string>
-    <string name="cart_checkout">Finalizar compra</string>
-    <string name="cart_increase_error">Ocurrió un error al aumentar la cantidad. Inténtalo de nuevo.</string>
-    <string name="cart_decrease_error">Ocurrió un error al disminuir la cantidad. Inténtalo de nuevo.</string>
-    <string name="label_remove">Eliminar producto</string>
+    <string name="cart_checkout">Pagar</string>
+    <string name="cart_increase_error">Hubo un error y no se pudo aumentar la cantidad. Inténtalo de nuevo.</string>
+    <string name="cart_decrease_error">Hubo un error y no se pudo disminuir la cantidad. Inténtalo de nuevo.</string>
+    <string name="label_remove">Quitar producto</string>
 
-    <!-- Selector de cantidad -->
     <string name="label_increase">Aumentar</string>
     <string name="label_decrease">Disminuir</string>
-    <string name="work_in_progress">Esta función está en desarrollo</string>
-    <string name="grab_beverage">¡Vuelve más tarde para descubrir las novedades!</string>
+    <string name="work_in_progress">Esta sección está en construcción</string>
+    <string name="grab_beverage">¡Tómate algo y vuelve más tarde!</string>
     <string name="see_more">VER MÁS</string>
     <string name="see_less">VER MENOS</string>
-    <string name="remove_item">Eliminar producto</string>
+    <string name="remove_item">Quitar producto</string>
     <string name="reset">Restablecer</string>
     <string name="sort">Ordenar</string>
     <string name="price">Precio</string>
@@ -60,23 +54,37 @@
     <string name="lifestyle">Estilo de vida</string>
     <string name="per_serving">por porción</string>
     <string name="android_favorites">Favoritos de Android (predeterminado)</string>
-    <string name="rating">Calificación</string>
+    <string name="rating">Valoración</string>
     <string name="alphabetical">Alfabético</string>
     <string name="close">Cerrar</string>
 
-    <!-- Widget de pedidos recientes -->
     <string name="widget_title">Pedidos recientes de Jetsnack</string>
     <string name="snack_order_widget_name">Pedidos recientes de Jetsnack</string>
-    <string name="snack_order_widget_description">Consulta y vuelve a pedir tus productos recientes.</string>
+    <string name="snack_order_widget_description">Consulta y repite rápidamente tus pedidos recientes.</string>
     <string name="shopping_cart_button_label">Ver carrito de compras</string>
     <string name="sample_no_data_text">Sin datos</string>
     <string name="sample_add_button_text">Agregar</string>
     <string name="add_to_cart_content_description">Agregar al carrito de compras</string>
 
-    <!-- Compras y notificaciones -->
+    <!-- Lab 2 -->
     <string name="cart_empty">Tu carrito está vacío</string>
-    <string name="checkout_queued">Procesando tu pedido en segundo plano. Te avisaremos cuando esté listo.</string>
+    <string name="checkout_queued">Enviando tu pedido al servidor. Te avisaremos cuando esté confirmado.</string>
     <string name="notif_channel_name">Pedidos</string>
     <string name="notif_order_title">Pedido confirmado</string>
-    <string name="notif_order_text">Tu pedido de %1$d productos (%2$s) fue procesado</string>
+    <string name="notif_order_text">Recibimos tu pedido de %1$d productos (%2$s)</string>
+    <string name="rest_loading">Cargando datos del servidor…</string>
+    <string name="rest_error">No se pudieron cargar los datos en línea. Revisa tu conexión.</string>
+    <string name="snack_remote_summary">%1$d kcal por porción · valoración %2$.1f/5</string>
+    <string name="orders_title">Mis pedidos</string>
+    <string name="orders_empty">Aún no has hecho pedidos. ¡Agrega snacks a tu carrito y paga!</string>
+    <string name="order_status_pending">Enviando…</string>
+    <string name="order_status_confirmed">Confirmado</string>
+    <string name="order_status_failed">Falló</string>
+    <string name="order_ref">Ref. del servidor %1$s</string>
+    <string name="catalog_title">Datos del servidor</string>
+    <string name="catalog_never">Aún sin actualizar</string>
+    <string name="catalog_last_sync">Última actualización: %1$s</string>
+    <string name="catalog_sync_now">Actualizar ahora</string>
+    <string name="catalog_syncing">Actualizando…</string>
+    <string name="added_to_cart">Agregado a tu carrito</string>
 </resources>

@@ -35,3 +35,6 @@
 -dontwarn org.openjsse.net.ssl.OpenJSSE
 
 -keep class androidx.compose.ui.platform.AndroidCompositionLocals_androidKt { *; }
+-keepattributes Signature, *Annotation*, InnerClasses, EnclosingMethod
+-keep class co.edu.udea.compumovil.gr07_20262.lab2.data.** { *; }
+-keep,allowobfuscation,allowshrinking class kotlin.coroutines.Continuation

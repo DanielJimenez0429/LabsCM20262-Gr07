@@ -99,6 +99,7 @@ import co.edu.udea.compumovil.gr07_20262.lab2.R
 import co.edu.udea.compumovil.gr07_20262.lab2.model.Snack
 import co.edu.udea.compumovil.gr07_20262.lab2.model.SnackCollection
 import co.edu.udea.compumovil.gr07_20262.lab2.model.SnackRepo
+import co.edu.udea.compumovil.gr07_20262.lab2.model.SnackbarManager
 import co.edu.udea.compumovil.gr07_20262.lab2.ui.LocalNavAnimatedVisibilityScope
 import co.edu.udea.compumovil.gr07_20262.lab2.ui.LocalSharedTransitionScope
 import co.edu.udea.compumovil.gr07_20262.lab2.ui.SnackSharedElementKey
@@ -115,6 +116,11 @@ import co.edu.udea.compumovil.gr07_20262.lab2.ui.theme.Neutral8
 import co.edu.udea.compumovil.gr07_20262.lab2.ui.utils.formatPrice
 import kotlin.math.max
 import kotlin.math.min
+import androidx.compose.runtime.produceState
+import androidx.compose.ui.platform.LocalContext
+import co.edu.udea.compumovil.gr07_20262.lab2.data.CartStore
+import co.edu.udea.compumovil.gr07_20262.lab2.data.SnackInfoRepository
+import co.edu.udea.compumovil.gr07_20262.lab2.data.SnackInfoUiState
 
 private val BottomBarHeight = 56.dp
 private val TitleHeight = 128.dp
@@ -145,6 +151,13 @@ val snackDetailBoundsTransform = BoundsTransform { _, _ ->
 fun SnackDetail(snackId: Long, origin: String, upPress: () -> Unit) {
     val snack = remember(snackId) { SnackRepo.getSnack(snackId) }
     val related = remember(snackId) { SnackRepo.getRelated(snackId) }
+    val context = LocalContext.current
+    val infoState by produceState<SnackInfoUiState>(
+        initialValue = SnackInfoUiState.Loading,
+        key1 = snackId,
+    ) {
+        value = SnackInfoRepository.get(context).load(snack.name)
+    }
     val sharedTransitionScope = LocalSharedTransitionScope.current
         ?: throw IllegalStateException("No Scope found")
     val animatedVisibilityScope = LocalNavAnimatedVisibilityScope.current
@@ -181,11 +194,17 @@ fun SnackDetail(snackId: Long, origin: String, upPress: () -> Unit) {
         ) {
             val scroll = rememberScrollState(0)
             Header(snack.id, origin = origin)
-            Body(related, scroll)
+            Body(related, infoState, scroll)
             Title(snack, origin) { scroll.value }
             Image(snackId, origin, snack.imageRes) { scroll.value }
             Up(upPress)
-            CartBottomBar(modifier = Modifier.align(Alignment.BottomCenter))
+            CartBottomBar(
+                onAddToCart = { quantity ->
+                    CartStore.add(snack, quantity)
+                    SnackbarManager.showMessage(R.string.added_to_cart)
+                },
+                modifier = Modifier.align(Alignment.BottomCenter),
+            )
         }
     }
 }
@@ -279,7 +298,7 @@ private fun SharedTransitionScope.Up(upPress: () -> Unit) {
 }
 
 @Composable
-private fun Body(related: List<SnackCollection>, scroll: ScrollState) {
+private fun Body(related: List<SnackCollection>, infoState: SnackInfoUiState, scroll: ScrollState) {
     val sharedTransitionScope =
         LocalSharedTransitionScope.current ?: throw IllegalStateException("No scope found")
     with(sharedTransitionScope) {
@@ -313,14 +332,14 @@ private fun Body(related: List<SnackCollection>, scroll: ScrollState) {
                         var seeMore by remember { mutableStateOf(true) }
                         with(sharedTransitionScope) {
                             Text(
-                                text = stringResource(R.string.detail_placeholder),
+                                text = detailText(infoState),
                                 style = MaterialTheme.typography.bodyLarge,
                                 color = JetsnackTheme.colors.textHelp,
                                 maxLines = if (seeMore) 5 else Int.MAX_VALUE,
                                 overflow = TextOverflow.Ellipsis,
                                 modifier = HzPadding.skipToLookaheadSize(),
 
-                            )
+                                )
                         }
                         val textButton = if (seeMore) {
                             stringResource(id = R.string.see_more)
@@ -352,7 +371,7 @@ private fun Body(related: List<SnackCollection>, scroll: ScrollState) {
                         )
                         Spacer(Modifier.height(4.dp))
                         Text(
-                            text = stringResource(R.string.ingredients_list),
+                            text = ingredientsText(infoState),
                             style = MaterialTheme.typography.bodyLarge,
                             color = JetsnackTheme.colors.textHelp,
                             modifier = HzPadding,
@@ -509,7 +528,7 @@ private fun Image(
                     )
                     .fillMaxSize(),
 
-            )
+                )
         }
     }
 }
@@ -545,7 +564,7 @@ private fun CollapsingImageLayout(collapseFractionProvider: () -> Float, modifie
 }
 
 @Composable
-private fun CartBottomBar(modifier: Modifier = Modifier) {
+private fun CartBottomBar(onAddToCart: (Int) -> Unit, modifier: Modifier = Modifier) {
     val (count, updateCount) = remember { mutableIntStateOf(1) }
     val sharedTransitionScope =
         LocalSharedTransitionScope.current ?: throw IllegalStateException("No Shared scope")
@@ -564,7 +583,7 @@ private fun CartBottomBar(modifier: Modifier = Modifier) {
                             ),
                         ) { it } + fadeIn(tween(300, delayMillis = 300)),
                         exit = slideOutVertically(tween(50)) { it } +
-                            fadeOut(tween(50)),
+                                fadeOut(tween(50)),
                     ),
             ) {
                 Column {
@@ -583,7 +602,7 @@ private fun CartBottomBar(modifier: Modifier = Modifier) {
                         )
                         Spacer(Modifier.width(16.dp))
                         JetsnackButton(
-                            onClick = { /* todo */ },
+                            onClick = { onAddToCart(count) },
                             modifier = Modifier.weight(1f),
                         ) {
                             Text(
@@ -612,4 +631,23 @@ private fun SnackDetailPreview() {
             upPress = { },
         )
     }
+}
+
+@Composable
+private fun detailText(state: SnackInfoUiState): String = when (state) {
+    SnackInfoUiState.Loading -> stringResource(R.string.rest_loading)
+    SnackInfoUiState.Error ->
+        stringResource(R.string.rest_error) + "\n\n" + stringResource(R.string.detail_placeholder)
+    SnackInfoUiState.NotFound -> stringResource(R.string.detail_placeholder)
+    is SnackInfoUiState.Success -> {
+        val info = state.info
+        stringResource(R.string.snack_remote_summary, info.calories, info.rating) +
+                "\n\n" + (info.description ?: "")
+    }
+}
+
+@Composable
+private fun ingredientsText(state: SnackInfoUiState): String {
+    val text = (state as? SnackInfoUiState.Success)?.info?.ingredients
+    return if (!text.isNullOrBlank()) text else stringResource(R.string.ingredients_list)
 }

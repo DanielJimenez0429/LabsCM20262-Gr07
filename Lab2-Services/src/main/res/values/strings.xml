@@ -87,9 +87,24 @@
 
     <!-- Checkout and notifications -->
     <string name="cart_empty">Your cart is empty</string>
-    <string name="checkout_queued">Processing your order in the background. We will notify you when it is ready.</string>
+    <string name="checkout_queued">Sending your order to the server. We will notify you when it is confirmed.</string>
     <string name="notif_channel_name">Orders</string>
     <string name="notif_order_title">Order confirmed</string>
-    <string name="notif_order_text">Your order of %1$d items (%2$s) was processed</string>
+    <string name="notif_order_text">Your order of %1$d items (%2$s) was received</string>
+    <string name="rest_loading">Loading data from the server…</string>
+    <string name="rest_error">Could not load online data. Check your connection.</string>
+    <string name="snack_remote_summary">%1$d kcal per serving · rating %2$.1f/5</string>
+    <string name="orders_title">My orders</string>
+    <string name="orders_empty">You have not placed any orders yet. Add snacks to your cart and checkout!</string>
+    <string name="order_status_pending">Sending…</string>
+    <string name="order_status_confirmed">Confirmed</string>
+    <string name="order_status_failed">Failed</string>
+    <string name="order_ref">Server ref. %1$s</string>
+    <string name="catalog_title">Server data</string>
+    <string name="catalog_never">Not updated yet</string>
+    <string name="catalog_last_sync">Last update: %1$s</string>
+    <string name="catalog_sync_now">Update now</string>
+    <string name="catalog_syncing">Updating…</string>
+    <string name="added_to_cart">Added to your cart</string>
 
 </resources>

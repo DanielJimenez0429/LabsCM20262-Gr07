@@ -32,6 +32,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import co.edu.udea.compumovil.gr07_20262.lab2.work.WorkScheduler
 
 class MainActivity : ComponentActivity() {
 
@@ -42,6 +43,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
+        WorkScheduler.schedulePeriodicSnackSync(this)
 
         // Solicitar permiso de notificacion en Android
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&

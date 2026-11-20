@@ -25,10 +25,9 @@ import co.edu.udea.compumovil.gr07_20262.lab2.model.SnackbarManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import android.content.Context
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
-import androidx.work.workDataOf
-import co.edu.udea.compumovil.gr07_20262.lab2.work.CheckoutWorker
+import co.edu.udea.compumovil.gr07_20262.lab2.data.OrderRepository
+import co.edu.udea.compumovil.gr07_20262.lab2.work.WorkScheduler
+import co.edu.udea.compumovil.gr07_20262.lab2.data.CartStore
 
 /**
  * Holds the contents of the cart and allows changes to it.
@@ -37,8 +36,8 @@ import co.edu.udea.compumovil.gr07_20262.lab2.work.CheckoutWorker
  */
 class CartViewModel(private val snackbarManager: SnackbarManager, snackRepository: SnackRepo) : ViewModel() {
 
-    private val _orderLines: MutableStateFlow<List<OrderLine>> =
-        MutableStateFlow(snackRepository.getCart())
+    // Carrito compartido con el detalle del snack (CartStore)
+    private val _orderLines: MutableStateFlow<List<OrderLine>> = CartStore.lines
     val orderLines: StateFlow<List<OrderLine>> get() = _orderLines
 
     // Logic to show errors every few requests
@@ -75,15 +74,13 @@ class CartViewModel(private val snackbarManager: SnackbarManager, snackRepositor
             snackbarManager.showMessage(R.string.cart_empty)
             return
         }
-        val request = OneTimeWorkRequestBuilder<CheckoutWorker>()
-            .setInputData(
-                workDataOf(
-                    CheckoutWorker.KEY_ITEMS to lines.sumOf { it.count },
-                    CheckoutWorker.KEY_TOTAL to lines.sumOf { it.snack.price * it.count },
-                ),
-            )
-            .build()
-        WorkManager.getInstance(context.applicationContext).enqueue(request)
+        val summary = lines.joinToString(", ") { "${it.snack.name} x${it.count}" }
+        val order = OrderRepository.get(context).create(
+            items = summary,
+            itemCount = lines.sumOf { it.count },
+            total = lines.sumOf { it.snack.price * it.count },
+        )
+        WorkScheduler.enqueueCheckout(context.applicationContext, order.id)
         _orderLines.value = emptyList()
         snackbarManager.showMessage(R.string.checkout_queued)
     }
