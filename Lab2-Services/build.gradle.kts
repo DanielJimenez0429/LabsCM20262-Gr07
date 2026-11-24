@@ -15,6 +15,7 @@
  */
 
 
+import java.util.Properties
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -46,15 +47,26 @@ android {
     }
 
     signingConfigs {
-        // Important: change the keystore for a production deployment
-        val userKeystore = File(System.getProperty("user.home"), ".android/debug.keystore")
-        val localKeystore = rootProject.file("debug_2.keystore")
-        val hasKeyInfo = userKeystore.exists()
+        // Firma del APK release. Las credenciales se leen de `keystore.properties`
+        // (en la raíz, ignorado por git) con las claves storeFile, storePassword,
+        // keyAlias y keyPassword. Si no existe, se usa el keystore debug del usuario
+        // (~/.android/debug.keystore) para que el APK release quede firmado igual.
+        val keystoreProps = Properties().apply {
+            val f = rootProject.file("keystore.properties")
+            if (f.exists()) f.inputStream().use { load(it) }
+        }
         create("release") {
-            storeFile = if (hasKeyInfo) userKeystore else localKeystore
-            storePassword = if (hasKeyInfo) "android" else System.getenv("compose_store_password")
-            keyAlias = if (hasKeyInfo) "androiddebugkey" else System.getenv("compose_key_alias")
-            keyPassword = if (hasKeyInfo) "android" else System.getenv("compose_key_password")
+            if (keystoreProps.getProperty("storeFile") != null) {
+                storeFile = rootProject.file(keystoreProps.getProperty("storeFile"))
+                storePassword = keystoreProps.getProperty("storePassword")
+                keyAlias = keystoreProps.getProperty("keyAlias")
+                keyPassword = keystoreProps.getProperty("keyPassword")
+            } else {
+                storeFile = File(System.getProperty("user.home"), ".android/debug.keystore")
+                storePassword = "android"
+                keyAlias = "androiddebugkey"
+                keyPassword = "android"
+            }
         }
     }
 
@@ -84,10 +96,6 @@ android {
         }
     }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17

@@ -14,3 +14,7 @@
 .cxx
 local.properties
 .kotlin/
+
+# Firma del APK (no subir credenciales)
+keystore.properties
+*.jks
