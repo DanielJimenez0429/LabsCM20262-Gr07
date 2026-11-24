@@ -71,7 +71,7 @@ fun DestinationBar(modifier: Modifier = Modifier) {
                     title = {
                         Row {
                             Text(
-                                text = "Delivery to 1600 Amphitheater Way",
+                                text = stringResource(R.string.delivery_address),
                                 style = MaterialTheme.typography.titleMedium,
                                 color = JetsnackTheme.colors.textSecondary,
                                 textAlign = TextAlign.Center,

@@ -16,11 +16,19 @@
 
 package co.edu.udea.compumovil.gr07_20262.lab2.model
 
+import androidx.annotation.StringRes
 import androidx.compose.runtime.Immutable
+import co.edu.udea.compumovil.gr07_20262.lab2.R
 import kotlin.random.Random
 
 @Immutable
-data class SnackCollection(val id: Long, val name: String, val snacks: List<Snack>, val type: CollectionType = CollectionType.Normal)
+data class SnackCollection(
+    val id: Long,
+    val name: String,
+    val snacks: List<Snack>,
+    val type: CollectionType = CollectionType.Normal,
+    @StringRes val nameRes: Int? = null,
+)
 
 enum class CollectionType { Normal, Highlight }
 
@@ -48,6 +56,7 @@ object SnackRepo {
 private val tastyTreats = SnackCollection(
     id = 1L,
     name = "Android's picks",
+    nameRes = R.string.collection_android_picks,
     type = CollectionType.Highlight,
     snacks = snacks.subList(0, 13),
 )
@@ -55,32 +64,38 @@ private val tastyTreats = SnackCollection(
 private val popular = SnackCollection(
     id = Random.nextLong(),
     name = "Popular on Jetsnack",
+    nameRes = R.string.collection_popular,
     snacks = snacks.subList(14, 19),
 )
 
 private val wfhFavs = tastyTreats.copy(
     id = Random.nextLong(),
     name = "WFH favourites",
+    nameRes = R.string.collection_wfh,
 )
 
 private val newlyAdded = popular.copy(
     id = Random.nextLong(),
     name = "Newly Added",
+    nameRes = R.string.collection_newly_added,
 )
 
 private val exclusive = tastyTreats.copy(
     id = Random.nextLong(),
     name = "Only on Jetsnack",
+    nameRes = R.string.collection_exclusive,
 )
 
 private val also = tastyTreats.copy(
     id = Random.nextLong(),
     name = "Customers also bought",
+    nameRes = R.string.collection_also_bought,
 )
 
 private val inspiredByCart = tastyTreats.copy(
     id = Random.nextLong(),
     name = "Inspired by your cart",
+    nameRes = R.string.collection_inspired_by_cart,
 )
 
 private val snackCollections = listOf(

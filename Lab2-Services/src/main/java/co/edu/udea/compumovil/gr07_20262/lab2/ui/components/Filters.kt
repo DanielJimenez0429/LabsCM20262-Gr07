@@ -154,7 +154,7 @@ fun FilterChip(filter: Filter, modifier: Modifier = Modifier, shape: Shape = Mat
                 .then(border),
         ) {
             Text(
-                text = filter.name,
+                text = filter.labelRes?.let { stringResource(it) } ?: filter.name,
                 style = MaterialTheme.typography.bodySmall,
                 maxLines = 1,
                 modifier = Modifier.padding(

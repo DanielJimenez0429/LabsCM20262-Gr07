@@ -107,4 +107,30 @@
     <string name="catalog_syncing">Updating…</string>
     <string name="added_to_cart">Added to your cart</string>
 
+    <!-- Datos del catálogo (colecciones, filtros y categorías) -->
+    <string name="delivery_address">Delivery to 1600 Amphitheater Way</string>
+    <string name="collection_android_picks">Android\'s picks</string>
+    <string name="collection_popular">Popular on Jetsnack</string>
+    <string name="collection_wfh">WFH favourites</string>
+    <string name="collection_newly_added">Newly Added</string>
+    <string name="collection_exclusive">Only on Jetsnack</string>
+    <string name="collection_also_bought">Customers also bought</string>
+    <string name="collection_inspired_by_cart">Inspired by your cart</string>
+    <string name="filter_organic">Organic</string>
+    <string name="filter_gluten_free">Gluten-free</string>
+    <string name="filter_dairy_free">Dairy-free</string>
+    <string name="filter_sweet">Sweet</string>
+    <string name="filter_savory">Savory</string>
+    <string name="category_chips">Chips &amp; crackers</string>
+    <string name="category_fruit">Fruit snacks</string>
+    <string name="category_desserts">Desserts</string>
+    <string name="category_nuts">Nuts</string>
+    <string name="lifestyle_paleo">Paleo</string>
+    <string name="lifestyle_vegan">Vegan</string>
+    <string name="lifestyle_vegetarian">Vegetarian</string>
+    <string name="lifestyle_whole30">Whole30</string>
+    <string name="search_categories">Categories</string>
+    <string name="search_lifestyles">Lifestyles</string>
+    <string name="search_recent">Recent searches</string>
+    <string name="search_popular">Popular searches</string>
 </resources>

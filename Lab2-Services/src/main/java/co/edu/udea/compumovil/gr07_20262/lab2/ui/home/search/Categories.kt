@@ -33,6 +33,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
@@ -64,7 +65,7 @@ fun SearchCategories(categories: List<SearchCategoryCollection>) {
 private fun SearchCategoryCollection(collection: SearchCategoryCollection, index: Int, modifier: Modifier = Modifier) {
     Column(modifier) {
         Text(
-            text = collection.name,
+            text = collection.nameRes?.let { stringResource(it) } ?: collection.name,
             style = MaterialTheme.typography.titleLarge,
             color = JetsnackTheme.colors.textPrimary,
             modifier = Modifier
@@ -104,7 +105,7 @@ private fun SearchCategory(category: SearchCategory, gradient: List<Color>, modi
             .clickable { /* todo */ },
         content = {
             Text(
-                text = category.name,
+                text = category.nameRes?.let { stringResource(it) } ?: category.name,
                 style = MaterialTheme.typography.titleMedium,
                 color = JetsnackTheme.colors.textSecondary,
                 modifier = Modifier

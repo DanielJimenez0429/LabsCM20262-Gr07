@@ -87,4 +87,31 @@
     <string name="catalog_sync_now">Actualizar ahora</string>
     <string name="catalog_syncing">Actualizando…</string>
     <string name="added_to_cart">Agregado a tu carrito</string>
+
+    <!-- Datos del catálogo (colecciones, filtros y categorías) -->
+    <string name="delivery_address">Entrega en 1600 Amphitheater Way</string>
+    <string name="collection_android_picks">Selección de Android</string>
+    <string name="collection_popular">Populares en Jetsnack</string>
+    <string name="collection_wfh">Favoritos para trabajar en casa</string>
+    <string name="collection_newly_added">Recién agregados</string>
+    <string name="collection_exclusive">Solo en Jetsnack</string>
+    <string name="collection_also_bought">Otros clientes también compraron</string>
+    <string name="collection_inspired_by_cart">Inspirado en tu carrito</string>
+    <string name="filter_organic">Orgánico</string>
+    <string name="filter_gluten_free">Sin gluten</string>
+    <string name="filter_dairy_free">Sin lácteos</string>
+    <string name="filter_sweet">Dulce</string>
+    <string name="filter_savory">Salado</string>
+    <string name="category_chips">Papas y galletas</string>
+    <string name="category_fruit">Snacks de fruta</string>
+    <string name="category_desserts">Postres</string>
+    <string name="category_nuts">Frutos secos</string>
+    <string name="lifestyle_paleo">Paleo</string>
+    <string name="lifestyle_vegan">Vegano</string>
+    <string name="lifestyle_vegetarian">Vegetariano</string>
+    <string name="lifestyle_whole30">Whole30</string>
+    <string name="search_categories">Categorías</string>
+    <string name="search_lifestyles">Estilos de vida</string>
+    <string name="search_recent">Búsquedas recientes</string>
+    <string name="search_popular">Búsquedas populares</string>
 </resources>

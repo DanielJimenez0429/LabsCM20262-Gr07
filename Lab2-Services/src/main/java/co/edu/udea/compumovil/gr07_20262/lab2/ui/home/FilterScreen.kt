@@ -229,7 +229,7 @@ fun SortFilters(sortFilters: List<Filter> = SnackRepo.getSortFilters(), sortStat
 
     sortFilters.forEach { filter ->
         SortOption(
-            text = filter.name,
+            text = filter.labelRes?.let { stringResource(it) } ?: filter.name,
             icon = filter.icon,
             selected = sortState == filter.name,
             onClickOption = {

@@ -17,21 +17,28 @@
 package co.edu.udea.compumovil.gr07_20262.lab2.model
 
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.mutableStateOf
 import co.edu.udea.compumovil.gr07_20262.lab2.R
 
 @Stable
-class Filter(val name: String, enabled: Boolean = false, @DrawableRes val icon: Int? = null) {
+/** [name] es la clave estable del filtro; [labelRes] es el texto traducido que se muestra. */
+class Filter(
+    val name: String,
+    enabled: Boolean = false,
+    @DrawableRes val icon: Int? = null,
+    @StringRes val labelRes: Int? = null,
+) {
     val enabled = mutableStateOf(enabled)
 }
 
 val filters = listOf(
-    Filter(name = "Organic"),
-    Filter(name = "Gluten-free"),
-    Filter(name = "Dairy-free"),
-    Filter(name = "Sweet"),
-    Filter(name = "Savory"),
+    Filter(name = "Organic", labelRes = R.string.filter_organic),
+    Filter(name = "Gluten-free", labelRes = R.string.filter_gluten_free),
+    Filter(name = "Dairy-free", labelRes = R.string.filter_dairy_free),
+    Filter(name = "Sweet", labelRes = R.string.filter_sweet),
+    Filter(name = "Savory", labelRes = R.string.filter_savory),
 )
 val priceFilters = listOf(
     Filter(name = "$"),
@@ -40,23 +47,23 @@ val priceFilters = listOf(
     Filter(name = "$$$$"),
 )
 val sortFilters = listOf(
-    Filter(name = "Android's favorite (default)", icon = R.drawable.ic_android),
-    Filter(name = "Rating", icon = R.drawable.ic_star),
-    Filter(name = "Alphabetical", icon = R.drawable.ic_sort_by_alpha),
+    Filter(name = "Android's favorite (default)", icon = R.drawable.ic_android, labelRes = R.string.android_favorites),
+    Filter(name = "Rating", icon = R.drawable.ic_star, labelRes = R.string.rating),
+    Filter(name = "Alphabetical", icon = R.drawable.ic_sort_by_alpha, labelRes = R.string.alphabetical),
 )
 
 val categoryFilters = listOf(
-    Filter(name = "Chips & crackers"),
-    Filter(name = "Fruit snacks"),
-    Filter(name = "Desserts"),
-    Filter(name = "Nuts"),
+    Filter(name = "Chips & crackers", labelRes = R.string.category_chips),
+    Filter(name = "Fruit snacks", labelRes = R.string.category_fruit),
+    Filter(name = "Desserts", labelRes = R.string.category_desserts),
+    Filter(name = "Nuts", labelRes = R.string.category_nuts),
 )
 val lifeStyleFilters = listOf(
-    Filter(name = "Organic"),
-    Filter(name = "Gluten-free"),
-    Filter(name = "Dairy-free"),
-    Filter(name = "Sweet"),
-    Filter(name = "Savory"),
+    Filter(name = "Organic", labelRes = R.string.filter_organic),
+    Filter(name = "Gluten-free", labelRes = R.string.filter_gluten_free),
+    Filter(name = "Dairy-free", labelRes = R.string.filter_dairy_free),
+    Filter(name = "Sweet", labelRes = R.string.filter_sweet),
+    Filter(name = "Savory", labelRes = R.string.filter_savory),
 )
 
 var sortDefault = sortFilters.get(0).name
